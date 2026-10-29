@@ -46,7 +46,11 @@ FFMPEG = {
 }
 FFMPEG["windows-x86_64-gnu"] = FFMPEG["windows-x86_64-msvc"]
 if a.platform in FFMPEG:
-    tag, stem, digest = FFMPEG[a.platform]
+    if (a.destination / 'ffmpeg.exe').exists() and (a.destination / 'ffmpeg-LICENSE.txt').exists():
+        tag = None
+    else:
+        tag, stem, digest = FFMPEG[a.platform]
+if tag is not None:
     archive = a.cache / (stem + ".zip")
     if not archive.exists():
         data = urllib.request.urlopen(f"https://github.com/BtbN/FFmpeg-Builds/releases/download/{tag}/{stem}.zip", timeout=300).read()

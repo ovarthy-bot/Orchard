@@ -111,7 +111,7 @@ else
   qt_dep = dependency('qt6', version: '>=6.8', modules: qt_modules, main: true)
   qt_entry_dep = []
 endif
-qt_gui_private = dependency('Qt6GuiPrivate', method: 'cmake', modules: ['Qt6::GuiPrivate'])
+qt_gui_private = dependency('Qt6Gui', method: 'cmake', modules: ['Qt6::GuiPrivate'])
 thread_dep = dependency('threads')
 platform_deps = [thread_dep]
 # DBus (Linux) and IOKit (macOS) back the screen wake lock.
@@ -162,7 +162,7 @@ rust_archive = custom_target('orchard Rust core',
 )
 rust_platform_deps = []
 if host_machine.system() == 'windows'
-  rust_platform_deps += [cpp.find_library('ntdll'), cpp.find_library('bcrypt')]
+  rust_platform_deps += [cpp.find_library('ntdll'), cpp.find_library('bcrypt'), cpp.find_library('ws2_32'), cpp.find_library('userenv')]
 endif
 rust_dep = declare_dependency(link_with: rust_archive,
   dependencies: rust_platform_deps)
